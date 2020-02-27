@@ -1,0 +1,603 @@
+package stepDefinitions;
+
+
+import static org.testng.Assert.assertEquals;
+
+import java.awt.Robot;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;		
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.GherkinKeyword;
+import com.aventstack.extentreports.gherkin.model.Feature;
+import com.aventstack.extentreports.gherkin.model.Scenario;
+import com.sun.xml.bind.Locatable;
+import com.testautomation.Utility.WebDriverFactory;
+import Listeners.ExtentReportListener;
+import ReusabilityMethods.CommonMethods;
+import ReusabilityMethods.ExcelDataConfig;
+
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+
+public class ProfilePage extends ExtentReportListener {
+
+	WebDriverFactory webDriverFactory;
+	public static WebDriver driver;
+	//ExcelDataConfig excel=new ExcelDataConfig("C:\\Users\\ruchi\\FX_Selenium\\FIleXchange\\TestData(2).xlsx");
+	ExcelDataConfig excel=new ExcelDataConfig();
+	
+	
+	/*public ProfilePage (WebDriverFactory DriverFactory) throws Exception
+	{
+		super();
+		webDriverFactory = new WebDriverFactory();
+	}*/
+	
+	 
+	@Given("^Login for Profiles$")
+	public void Login_forProfile()
+	{
+		test = extent.createTest(Feature.class,"Profile Page feature");							
+		test=test.createNode(Scenario.class, "Profile Page Scenario");
+		ExtentTest logInfo=null;
+		try {
+			
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\ruchi\\OneDrive\\Desktop\\geckodriver-v0.26.0-win64\\geckodriver.exe");
+			WebDriver driver= new FirefoxDriver();
+			
+			  logInfo=test.createNode(new GherkinKeyword("Given"), "Login for Profiles");
+			  String baseUrl = "https://qa.flx.regalpayone.com/login"; 
+			  driver.get(baseUrl);
+			  // WebDriverFactory.OpenBrowser( "IE", "https://qa.flx.regalpayone.com/login");  //Launching the browser
+			   Thread.sleep(16000);
+		
+				//this.driver = webDriverFactory.driver; 
+
+				Thread.sleep(3000);
+			/*	driver.findElement(By.xpath("//button[@id='details-button']")).click();
+				Thread.sleep(3000);
+				driver.findElement(By.xpath("//a[@id='proceed-link']")).click();
+				Thread.sleep(3000); */
+				driver.findElement(By.xpath("//button[.='Login']")).click();
+				Thread.sleep(16000);
+				driver.findElement(By.xpath("//input[@id='Username']")).sendKeys(excel.getData("Credentials", 0, 0));
+				driver.findElement(By.xpath("//input[@id='Password']")).sendKeys(excel.getData("Credentials", 0, 1));
+				
+				Thread.sleep(3000);
+				
+				driver.findElement(By.xpath("//button[@value='login']")).click();
+				Thread.sleep(3000);
+				
+				//select the org from the dropdown
+				WebElement  element= driver.findElement(By.xpath("//select[@id='ddlOrganizations']"));
+				int index=1;
+				CommonMethods.SelectValueFromDropDown(element,index);
+				Thread.sleep(3000);
+				
+			
+				
+				//click on submit button
+				driver.findElement(By.xpath("//button[@id='btnSubmit']")).click();
+				Thread.sleep(9000);
+				
+				//Select Tenant FileXchange
+				WebElement  TenantSelection= driver.findElement(By.xpath("//select[@id='ddlCompanies']"));
+				int index1=1;
+				CommonMethods.SelectValueFromDropDown(TenantSelection,index1);
+				Thread.sleep(3000);
+				
+				//click on submit button
+				driver.findElement(By.xpath("//button[@id='btnSubmit']")).click();
+				Thread.sleep(16000);
+				 Thread.sleep(20000);
+				Thread.sleep(16000);
+				Thread.sleep(20000);
+		     	logInfo.pass("User is on Home Page");
+				logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+							
+				
+			} 
+			
+			catch (AssertionError | Exception e) {
+				testStepHandle("FAIL",driver,logInfo,e);	
+				
+			}		
+		}	
+	
+	/*@When("^Title of Home page matches$")
+	public void HomePage_Title() 
+	
+	{
+		ExtentTest logInfo=null;
+		try {
+									
+			logInfo=test.createNode(new GherkinKeyword("When"), "Title of Home page matches");
+			String Expected_title = "Profiles";
+		    String Actual_title = driver.getTitle();
+		    if(Actual_title.contains(Expected_title))
+		    {
+			System.out.println(Actual_title);
+			
+			
+			logInfo.pass("Title of Home page matched");
+			logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+		    }
+		    
+		} catch (AssertionError | Exception e) {
+			testStepHandle("FAIL",driver,logInfo,e);
+			
+		}
+		
+	
+	@Then("^Verify click on Add Profile$")
+	public void Verify_ClickAddProfile()
+	{
+		ExtentTest logInfo=null;
+		try {
+			 logInfo=test.createNode(new GherkinKeyword("Then"), "Verify click on Add Profile");
+			 
+			//Click on Profile
+			//driver.findElement(By.xpath("//strong[text()='Profiles']"));
+			//Thread.sleep(5000);
+			
+			//Click on Add profile Button
+			driver.findElement(By.xpath("//button[text()='Add Profile']")).click();
+			Thread.sleep(16000);
+			
+			logInfo.pass("User is able to click on Add Profile");
+			logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+ 
+		}
+		
+		catch(AssertionError | Exception e)
+		{testStepHandle("FAIL",driver,logInfo,e);}
+	}
+	@Then("^Verify Profile is getting added$")
+	public void Verify_AddProfile()
+	{
+		ExtentTest logInfo=null;
+		try {
+			 logInfo=test.createNode(new GherkinKeyword("Then"), "Verify Profile is getting added");
+					
+			//Create Profile Name and add
+			String value1=RandomStringUtils.randomAlphabetic(8);
+		 	String Profilename= value1 + "Profile";
+		    try {
+				excel.write("Sheet1" ,0 ,0 , Profilename);
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 	Thread.sleep(600); 
+		 	
+    		logInfo= test.createNode(new GherkinKeyword("Then"), "Add the Profile name");
+    		
+    		driver.findElement(By.xpath("//input[@formcontrolname='name']")).sendKeys(Profilename);
+    		Thread.sleep(5000);
+    					 
+			//Select OutputFIleType 
+			WebElement  OutputFIleTypeSelection= driver.findElement(By.xpath("//select[@formcontrolname='outputFileTypeId']"));
+			int index2=29;
+			CommonMethods.SelectValueFromDropDown(OutputFIleTypeSelection,index2);
+			Thread.sleep(3000);
+				
+			//Select InputFIleType 
+			WebElement  InputFIleTypeSelection= driver.findElement(By.xpath("//select[@formcontrolname='inputFileTypeId']"));
+			int index3=1;
+			CommonMethods.SelectValueFromDropDown(InputFIleTypeSelection,index3);
+			Thread.sleep(3000);
+				
+			//Select Has header
+			driver.findElement(By.xpath("//input[@formcontrolname='hasHeader']")).click();
+			Thread.sleep(3000);
+				
+			//Select Has Trailer
+			driver.findElement(By.xpath("//input[@formcontrolname='hasTrailer']")).click();
+			Thread.sleep(3000);
+				
+			logInfo.pass("User is able to Add the details");
+			logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+				 
+			//Click on Add Profile
+			driver.findElement(By.xpath("//button[text()='Add Profile']")).click();;
+			Thread.sleep(5000);
+				
+			logInfo.pass("User is able to ADD the Profile");
+			logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+				 
+		}
+		
+		catch(AssertionError | Exception e)
+		{testStepHandle("FAIL",driver,logInfo,e);}
+	}
+
+	@Then("^Verify UploadFile$")
+	public void UploadFile()
+	{
+		ExtentTest logInfo=null;
+		try {
+			 logInfo=test.createNode(new GherkinKeyword("Then"), "Verify Upload File");
+					
+			   //click on Add Delimiter & Escape Character
+			    driver.findElement(By.xpath("//button[text()='Add Delimiter & Escape Character']")).click();
+			    Thread.sleep(9000);
+		 	
+			   //Active the window
+				driver.findElement(By.xpath("//div[@class='modal fade in show']/div/div")).click();
+				Thread.sleep(9000);	
+			 
+			   //Select delimiter 
+				WebElement  OutputFIleTypeSelection= driver.findElement(By.xpath("//select[@formcontrolname='delimiter']"));
+				int index2=1;
+				CommonMethods.SelectValueFromDropDown(OutputFIleTypeSelection,index2);
+				Thread.sleep(9000);
+				
+				//Select escapeCharacter 
+				WebElement  InputFIleTypeSelection= driver.findElement(By.xpath("//select[@formcontrolname='escapeCharacter']"));
+				int index3=1;
+				CommonMethods.SelectValueFromDropDown(InputFIleTypeSelection,index3);
+				Thread.sleep(3000);
+							 
+				//Click on Add button
+				driver.findElement(By.xpath("//button[text()='Add']")).click();
+				Thread.sleep(5000);
+				
+				//Check User able to Add Delimiter & Escape Character
+			    WebDriverWait wait=new WebDriverWait(driver,200);
+	            WebElement Succesfull_message = driver.findElement(By.xpath("//div[text()=' Delimiter & Escape character added successfully ']"));
+				wait.until(ExpectedConditions.visibilityOf(Succesfull_message));
+				Thread.sleep(5000);
+				 logInfo.pass("User able to Add Delimiter & Escape Character");
+				 logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+				 
+				//Upload File
+				 String FilePath="C:\\Users\\ruchi\\FX_Selenium\\FIleXchange\\Windowsfile.txt";
+				driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-upload-file/div[1]/div/div/form/div[1]/input[1]")).sendKeys(FilePath);
+				Thread.sleep(5000);
+				
+				//Click on Upload button
+				driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-upload-file/div[1]/div/div/form/div[2]/input")).click();
+				Thread.sleep(5000);
+				
+				 logInfo.pass("User is able to Upload File");
+				 logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+				
+		}
+		
+		catch(AssertionError | Exception e)
+		{testStepHandle("FAIL",driver,logInfo,e);}
+		
+		}
+		*/
+	@Then("^Verify Mapping$")
+	public void VerifyMapping()
+	{
+	//	ExtentTest logInfo=null;
+		try {
+			 //logInfo=test.createNode(new GherkinKeyword("Then"), "Verify Mapping of Profile");
+			Thread.sleep(20000);
+			 
+		/*	 //Check Inputfile box is available
+			driver.findElement(By.xpath("//strong[text()='Input file:']")).isDisplayed();
+			 Thread.sleep(1000);
+			// logInfo.pass("Inputfile box is visible");
+			 //logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+			   
+			//Check OutputFile box is available
+			 driver.findElement(By.xpath("//strong[text()='Output file:']")).isDisplayed();
+			 Thread.sleep(1000);
+			 logInfo.pass("Outputfile box is visible");
+			 logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+			 Thread.sleep(1000);*/
+			 //From this field
+			// driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div")).click();
+			//driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[1]")).click();
+			driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[1]/div[1]/div[1]/app-dynamic-draggable/div")).click();
+			Thread.sleep(1000);
+			WebElement ByFrom = driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[1]/div[1]/div[1]/app-dynamic-draggable/div"));				 
+			System.out.println("Hello");
+			//By Byfrom1=By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[1]/div[1]/div[1]/app-dynamic-draggable/div");
+			//By ByTo1=By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[2]/div[1]/div[1]");
+			 //To this field
+			
+		   // driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[2]")).click();
+			WebElement ByTo= driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[2]/div[1]/div[1]"));
+			System.out.println("Hello");
+			//CommonMethods.dragdrop(Byfrom1, ByTo1);
+		    //Actions class method to drag and drop 
+			Actions builder = new Actions(driver);
+			 	
+			// Code1
+			/* Actions builder = new Actions(driver);
+			 //Action dragAndDrop =
+			 //builder.clickAndHold(ElementFrom).moveToElement(ElementTo).release(ElementTo).build();
+			 //Thread.sleep(2000);
+			 //dragAndDrop.perform();
+			 */
+			 //Perform drag and drop
+			/* new Actions(driver).dragAndDrop(ByFrom, ByTo).release().build().perform();
+			  Robot robot = new Robot();
+			  robot.keyPress(KeyEvent.VK_ESCAPE);
+			  robot.keyRelease(KeyEvent.VK_ESCAPE);
+			  Thread.sleep(5000);
+			 
+			 Actions builder = new Actions(driver);
+			 System.out.println("Hello");*/
+			  
+			// Code 3
+			 
+			Thread.sleep(2000);
+			// builder.clickAndHold(ByFrom).moveToElement(ByTo).release().build().perform();
+           builder.dragAndDrop(ByFrom, ByTo).build().perform();
+            System.out.println("Done");
+			  //builder.build();
+			 
+			 /*code4
+			 Point coordinates1 = ElementFrom.getLocation();
+			 Point coordinates2 = ElementTo.getLocation();  
+			 Robot robot = new Robot();           
+			 robot.mouseMove(coordinates1.getX(), coordinates1.getY());
+			 //robot.mouseRelease(InputEvent.BUTTON1_MASK);
+			 robot.mousePress(InputEvent.BUTTON1_MASK);
+			 robot.mouseMove(coordinates2.getX(), coordinates2.getY());
+			 robot.mouseRelease(InputEvent.BUTTON1_MASK);
+			 Thread.sleep(2000);*/
+			 
+			// code 7 Actions move = new Actions(driver);
+             //move.moveToElement(ElementTo, ElementFrom, );
+             //move.build().perform(); 
+			 
+			 
+              //Actions builder=new Actions(driver);
+             // builder.moveToElement(driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[1]/div[1]/div[1]/app-dynamic-draggable/div/div"))).build().perform();
+              //Thread.sleep(2000);
+		/*	 WebElement LocatorFrom = driver.findElement(Byfrom1);
+			 
+			    WebElement LocatorTo = driver.findElement(ByTo1);
+			    System.out.println("Hello");
+			    String xto=Integer.toString(LocatorTo.getLocation().x);
+			    System.out.println("Hello");
+			    String yto=Integer.toString(LocatorTo.getLocation().y);
+			    System.out.println("Hello");
+			    ((JavascriptExecutor)driver).executeScript("function simulate(f,c,d,e){var b,a=null;for(b in eventMatchers)if(eventMatchers[b].test(c)){a=b;break}if(!a)return!1;document.createEvent?(b=document.createEvent(a),a==\"HTMLEvents\"?b.initEvent(c,!0,!0):b.initMouseEvent(c,!0,!0,document.defaultView,0,d,e,d,e,!1,!1,!1,!1,0,null),f.dispatchEvent(b)):(a=document.createEventObject(),a.detail=0,a.screenX=d,a.screenY=e,a.clientX=d,a.clientY=e,a.ctrlKey=!1,a.altKey=!1,a.shiftKey=!1,a.metaKey=!1,a.button=1,f.fireEvent(\"on\"+c,a));return!0} var eventMatchers={HTMLEvents:/^(?:load|unload|abort|error|select|change|submit|reset|focus|blur|resize|scroll)$/,MouseEvents:/^(?:click|dblclick|mouse(?:down|up|over|move|out))$/}; " +
+			    "simulate(arguments[0],\"mousedown\",0,0); simulate(arguments[0],\"mousemove\",arguments[1],arguments[2]); simulate(arguments[0],\"mouseup\",arguments[1],arguments[2]); ",
+			    LocatorFrom,xto,yto);
+			    System.out.println("done");
+			   */ 
+            
+        /*    WebElement source = driver.findElement(By.xpath("//tbody[@class ='lt-body']//tr[@data-test-id='table-row-id-20']//td[contains(@id,'ember')]//div[contains(@id,'ember')]//*[name()='svg']//*[name()='ellipse']"));
+            WebElement destination = driver.findElement(By.xpath("//tbody[@class ='lt-body']//tr[@data-test-id='table-row-id-3']//td[contains(@id,'ember')]//div[contains(@id,'ember')]//*[name()='svg']//*[name()='ellipse']"));
+*/
+          /*  Actions builder = new Actions(driver);
+            int x2 =ByFrom.getLocation().getX();
+            int y2 = ByTo.getLocation().getY();
+            builder.clickAndHold(ByFrom);
+            builder.moveByOffset(x2,y2);
+            builder.moveToElement(ByTo);
+            builder.release();
+            builder.perform();
+            builder.clickAndHold(ByFrom).moveByOffset(x2,y2).moveToElement(ByTo).release().build().perform();
+            System.out.println("done");*/
+            
+          /*  new Actions(driver).moveToElement(source).pause(Duration.ofSeconds(1)).clickAndHold(source).pause(Duration.ofSeconds(1)).moveByOffset(1, 0)
+            .moveToElement(destination)
+            .moveByOffset(1, 0)
+            .pause(Duration.ofSeconds(1))
+            .release().perform();*/
+            
+			 //.perform();
+			 Thread.sleep(5000);
+		//	  logInfo.pass("User able to drag and Drop the field");
+		//	logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+			 //verify text changed in to 'Drop here' box 
+			// String textTo = to.getText();
+			 
+			/*if(textTo.equals("I")) {
+			 System.out.println("PASS: Source is dropped to target as expected");
+			 }else {
+			 System.out.println("FAIL: Source couldn't be dropped to target as expected");
+			 }*/ 
+			   				
+				// logInfo.pass("User able to Map the field");
+				// logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+				
+		}
+		
+		catch(AssertionError | Exception e)
+		{//testStepHandle("FAIL",driver,logInfo,e);
+					}
+		
+	}
+	}
+	
+/*
+
+
+	@Then("^Search Profile$")
+	public void SearchOutputfile()
+	{
+		ExtentTest logInfo=null;
+		try {
+			 logInfo=test.createNode(new GherkinKeyword("Then"), "Search Profile");
+			
+			 Thread.sleep(9000);
+			//Click on Profile
+			driver.findElement(By.xpath("//strong[text()='Profiles']")).click();
+			Thread.sleep(10000);
+			
+			//to search the Profile
+			driver.findElement(By.xpath("//input[@id='mat-input-1']")).sendKeys(excel.ReadDate("Sheet1", 0, 0));
+		    Thread.sleep(6000);
+		         
+		     logInfo.pass("User is able to search the profile");
+			 logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+			
+				
+		}
+			catch(AssertionError | Exception e)
+			{testStepHandle("FAIL",driver,logInfo,e);}
+			
+			
+		}
+
+
+@Then("^Manage Profile$")
+public void ManageProfile()
+{
+	ExtentTest logInfo=null;
+	try {
+		 logInfo=test.createNode(new GherkinKeyword("Then"), "Verify Manage Profile");
+
+			
+		//CLick on ellipsis buttons	
+		 driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-list/div[4]/mat-table/mat-row[1]/mat-cell[5]/button/span/mat-icon")).click();
+	     Thread.sleep(2000);
+		 
+		
+		//click on manage Profile 
+	     driver.findElement(By.xpath("//span[text()='Manage Profile']")).click();
+	     Thread.sleep(9000);
+	    
+		//click on Delete Mapping button/Image	
+	 	//driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[2]/div[1]/div[1]/app-dynamic-dropable/div/div/div[2]/img")).click();
+		//Thread.sleep(5000);
+		
+	    //Set Default Value
+	    driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[2]/app-dynamic-output-header/div/div[1]/div/img")).click();
+	    Thread.sleep(2000);
+	    driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-manage/div/div[2]/app-dynamic-output-header/div/div[1]/div/div/a[1]")).click();
+	    Thread.sleep(2000);
+        driver.findElement(By.xpath("/html/body/div[2]/div[2]/div/mat-dialog-container/app-dynamic-setting/app-default-setting-form/div/form/div[1]/input")).sendKeys("DefaultValue");
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("/html/body/div[2]/div[2]/div/mat-dialog-container/app-dynamic-setting/app-default-setting-form/div/form/div[2]/button")).click();
+        Thread.sleep(9000);
+		 logInfo.pass("User able to Manage the Profile");
+		 logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+				 
+			
+	}
+		catch(AssertionError | Exception e)
+		{testStepHandle("FAIL",driver,logInfo,e);}
+		
+		
+	}
+
+
+@Then("^Activate Profile$")
+public void ActivateProfile()
+{
+	ExtentTest logInfo=null;
+	try {
+		 logInfo=test.createNode(new GherkinKeyword("Then"), "Verify Activate Profile");
+			
+		//Click on Profile
+		driver.findElement(By.xpath("//strong[text()='Profiles']")).click();
+		Thread.sleep(10000);
+		//to search the Profile
+		//Thread.sleep(5000);
+		  
+		driver.findElement(By.xpath("//input[@id='mat-input-2']")).sendKeys(excel.ReadDate("Sheet1", 0, 0));
+		Thread.sleep(2000);	
+			
+		//CLick on ellipsis buttons		
+			
+		 driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-list/div[4]/mat-table/mat-row[1]/mat-cell[5]/button/span/mat-icon")).click();
+	     Thread.sleep(2000);
+		 
+		
+		//click on Activate Profile 
+	     driver.findElement(By.xpath("//span[text()='Activate Profile']")).click();
+	     Thread.sleep(2000);
+	     logInfo.pass("User able to get yes/no popup");
+		 logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+		 
+		//click on Yes for Confirmation Box
+		 driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-confirm-dialog/div/div/div/div/div[2]/div/p/a[1]/button")).click();
+		 Thread.sleep(2000);
+		 logInfo.pass("User able to Activate the Profile");
+		 logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+		 
+		//Check Profile has been Activated successfully
+		 /*  WebDriverWait wait=new WebDriverWait(driver,20);
+            WebElement Succesfull_message = driver.findElement(By.xpath("//div[text()=' Profile activated successfully ']"));
+			wait.until(ExpectedConditions.visibilityOf(Succesfull_message));
+			Thread.sleep(5000);
+			logInfo.pass("Profile activated successfully");
+		    logInfo.addScreenCaptureFromPath(captureScreenShot(driver));*/ 
+				 
+	/*		
+	}
+		catch(AssertionError | Exception e)
+		{testStepHandle("FAIL",driver,logInfo,e);}
+		
+		
+	}
+
+@And("^Delete Profile$")
+public void DeleteProfile()
+{
+	ExtentTest logInfo=null;
+	try {
+		 logInfo=test.createNode(new GherkinKeyword("And"), "Verify Delete profile");
+
+			
+		//to search the Profile
+		//Thread.sleep(5000);
+		 driver.findElement(By.xpath("//input[@id='mat-input-2']")).clear();
+		driver.findElement(By.xpath("//input[@id='mat-input-2']")).sendKeys(excel.ReadDate("Sheet1", 0, 0));
+		Thread.sleep(2000);	
+			
+		//CLick on ellipsis buttons	
+		 driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-profile-list/div[4]/mat-table/mat-row[1]/mat-cell[5]/button/span/mat-icon")).click();
+	     Thread.sleep(2000);
+		 
+		
+		//click on Delete Profile 
+	     driver.findElement(By.xpath("//span[text()='Delete']")).click();
+	     Thread.sleep(2000);
+	    
+		//click on Yes for Confirmation Box
+		 driver.findElement(By.xpath("/html/body/app-root/app-default-layout/app-side-nav/div/div[2]/app-confirm-dialog/div/div/div/div/div[2]/div/p/a[1]/button")).click();
+		    Thread.sleep(2000);
+		
+		    //Check Profile has been deleted successfully
+		  /*  WebDriverWait wait=new WebDriverWait(driver,20);
+            WebElement Succesfull_message = driver.findElement(By.xpath("//div[text()=' Profile removed successfully ']"));
+			wait.until(ExpectedConditions.visibilityOf(Succesfull_message));
+			Thread.sleep(5000);*/
+		/*	logInfo.pass("Profile removed successfully");
+		    logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+		 
+				 
+			
+	}
+		catch(AssertionError | Exception e)
+		{testStepHandle("FAIL",driver,logInfo,e);}
+		
+		
+	}
+
+}*/
+	
+
+
+
