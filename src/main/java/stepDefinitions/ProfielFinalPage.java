@@ -114,7 +114,7 @@ public class ProfielFinalPage extends ExtentReportListener {
 				
 				//click on submit button
 				driver.findElement(By.xpath("//button[@id='btnSubmit']")).click();
-				Thread.sleep(9000);
+				Thread.sleep(16000);
 				 
 		     	logInfo.pass("User is on Home Page");
 				logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
@@ -610,9 +610,10 @@ public void DeleteProfile()
 	}
 
 @Then("^Verify Mapping$")
-public void testDragAndDrop() throws InterruptedException, IOException{ 
+public void testDragAndDrop()
+{ 
 	ExtentTest logInfo=null;
-	try{
+	try{Thread.sleep(5000);
 		 logInfo=test.createNode(new GherkinKeyword("Then"), "Verify Mapping of Profile");
 	        String basePath = new File("").getAbsolutePath();
 
@@ -620,8 +621,7 @@ public void testDragAndDrop() throws InterruptedException, IOException{
 	        //WebDriver driver= new FirefoxDriver();
 
 	        WebDriver webDriver = null;
-			webDriver.get("http://html5demos.com/drag#");
-
+			
 	        //http://stackoverflow.com/questions/29381233/how-to-simulate-html5-drag-and-drop-in-selenium-webdriver
 	        //https://gist.github.com/rcorreia/2362544
 	        final String JQUERY_LOAD_SCRIPT = (basePath + "/src/test/resources/jquery_load_helper.js");
@@ -644,8 +644,8 @@ public void testDragAndDrop() throws InterruptedException, IOException{
 
 	      //JQuery can ONLY work with id and css , xpath does NOT work with it.
 	      //String source =  "//section[@id='wrapper']/article/ul/li[4]/a"; 
-	      String source = "section#wrapper article ul li:nth-child(4) a";
-	      String target =  "section#wrapper article div"; //#bin";
+	      String source = "#body-row > div.col.py-3 > app-profile-manage > div > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > app-dynamic-draggable";
+	      String target =  "#output0 > div"; //#bin";
 
 	      StringBuffer buffer = new StringBuffer();
 	      String line;
@@ -670,11 +670,11 @@ public void testDragAndDrop() throws InterruptedException, IOException{
 	      ((JavascriptExecutor)webDriver).executeScript(javaScript);*/
 	      
 	      logInfo.pass("User able to Map the field");
-			 logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
+		logInfo.addScreenCaptureFromPath(captureScreenShot(driver));
 
 	      Thread.sleep(1000);
-	}catch(Exception e){
-		e.printStackTrace();
+	}	catch(AssertionError | Exception e)
+	{testStepHandle("FAIL",driver,logInfo,e);
 	}
 	
 }

@@ -148,7 +148,7 @@ public class OutputFilePage extends ExtentReportListener {
 			
 			//Create OutputFileName and send
 			String value1=RandomStringUtils.randomAlphabetic(8);
-		 	String OutputFileName= value1 + "Profile";
+		 	String OutputFileName= value1 + "OutputFile";
 		 	try {
 				excel.write("Sheet1" ,0 ,0 , OutputFileName);
 			} catch (Throwable e) {

@@ -2,19 +2,19 @@
 <testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-02-27T08:51:09Z" name="BDD Test Suite" finished-at="2020-02-27T08:55:28Z" duration-ms="258666">
+  <suite started-at="2020-02-28T13:01:19Z" name="BDD Test Suite" finished-at="2020-02-28T13:04:19Z" duration-ms="180330">
     <groups>
       <group name="cucumber">
         <method signature="TestRunner.feature(cucumber.api.testng.CucumberFeatureWrapper)[pri:0, instance:Runner.TestRunner@71b1176b]" name="feature" class="Runner.TestRunner"/>
       </group> <!-- cucumber -->
     </groups>
-    <test started-at="2020-02-27T08:51:09Z" name="FIleXchange" finished-at="2020-02-27T08:55:28Z" duration-ms="258666">
+    <test started-at="2020-02-28T13:01:19Z" name="FIleXchange" finished-at="2020-02-28T13:04:19Z" duration-ms="180330">
       <class name="Runner.TestRunner">
-        <test-method is-config="true" signature="setUpClass()[pri:0, instance:Runner.TestRunner@71b1176b]" started-at="2020-02-27T08:51:10Z" name="setUpClass" finished-at="2020-02-27T08:51:10Z" duration-ms="612" status="PASS">
+        <test-method is-config="true" signature="setUpClass()[pri:0, instance:Runner.TestRunner@71b1176b]" started-at="2020-02-28T13:01:19Z" name="setUpClass" finished-at="2020-02-28T13:01:20Z" duration-ms="516" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUpClass -->
-        <test-method signature="feature(cucumber.api.testng.CucumberFeatureWrapper)[pri:0, instance:Runner.TestRunner@71b1176b]" started-at="2020-02-27T08:51:10Z" name="feature" description="Runs Cucumber Feature" data-provider="features" finished-at="2020-02-27T08:55:28Z" duration-ms="257127" status="FAIL">
+        <test-method signature="feature(cucumber.api.testng.CucumberFeatureWrapper)[pri:0, instance:Runner.TestRunner@71b1176b]" started-at="2020-02-28T13:01:20Z" name="feature" description="Runs Cucumber Feature" data-provider="features" finished-at="2020-02-28T13:04:19Z" duration-ms="179231" status="FAIL">
           <params>
             <param index="0">
               <value>
@@ -67,15 +67,15 @@ at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:602)
 at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:291)
 at Listeners.ExtentReportListener.captureScreenShot(ExtentReportListener.java:79)
 at Listeners.ExtentReportListener.testStepHandle(ExtentReportListener.java:53)
-at stepDefinitions.ProfielFinalPage.DeleteProfile(ProfielFinalPage.java:607)
-at ✽.And Delete Profile(profilePage.feature:15)
+at stepDefinitions.ProfielFinalPage.SearchOutputfile(ProfielFinalPage.java:471)
+at ✽.Then Search Profile(profilePage.feature:12)
 ]]>
             </full-stacktrace>
           </exception> <!-- cucumber.runtime.CucumberException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- feature -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:Runner.TestRunner@71b1176b]" started-at="2020-02-27T08:55:28Z" name="tearDownClass" finished-at="2020-02-27T08:55:28Z" duration-ms="11" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:Runner.TestRunner@71b1176b]" started-at="2020-02-28T13:04:19Z" name="tearDownClass" finished-at="2020-02-28T13:04:19Z" duration-ms="10" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
